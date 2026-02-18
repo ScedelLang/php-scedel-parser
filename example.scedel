@@ -1,5 +1,3 @@
-scedel-version=1.0
-
 include "https://example.com/types.scedel"
 
 validator String(noAds) = not (this matches /.*(ads|banner|advertisement).*/)
