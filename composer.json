@@ -1,7 +1,19 @@
 {
   "name": "scedel/parser",
   "description": "Scedel parser and typed AST for PHP",
-  "type": "project",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SCEDel contributors"
+    }
+  ],
+  "keywords": [
+    "scedel",
+    "schema",
+    "parser",
+    "json"
+  ],
   "require": {
     "php": "^8.3",
     "antlr/antlr4-php-runtime": "^0.9.1"
@@ -19,7 +31,7 @@
       "Scedel\\Tests\\": "tests/"
     }
   },
-    "scripts": {
+  "scripts": {
     "generate-parser": [
       "sh -lc 'GRAMMAR=./Scedel.g4; if [ ! -f \"$GRAMMAR\" ]; then GRAMMAR=../Scedel.g4; fi; antlr -Dlanguage=PHP -visitor -no-listener -package Scedel\\\\Generated -o src/Generated \"$GRAMMAR\"'"
     ],
