@@ -1,6 +1,7 @@
 {
   "name": "scedel/parser",
   "description": "Scedel parser and typed AST for PHP",
+  "version": "0.2.0",
   "type": "library",
   "license": "MIT",
   "authors": [
