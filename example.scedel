@@ -1,0 +1,42 @@
+scedel-version=1.0
+
+include "https://example.com/types.scedel"
+
+validator String(noAds) = not (this matches /.*(ads|banner|advertisement).*/)
+validator String(noCaps, i:Int = 3) = not (this matches /.*[A-Z]{3,}.*/)
+validator Int(lessThan, i:Int) = this < $i
+
+type PostStatus = "Draft" | "Rejected" | "Published"
+type DateTimeFormatted = DateTime(format:"YYYY-MM-DD HH:ii:SS")
+
+type Comment = {
+    authorId: Uint
+    text: String
+    createdAt: DateTimeFormatted? default now()
+}
+
+type Post = {
+    id: Uint
+    title: String(min:5, max:255)
+    text: String(max:65535, noAds, noCaps:5)
+    createdAt: DateTimeFormatted
+    modifiedAt?: DateTimeFormatted(min:this.createdAt)
+    rejectReason: when status = "Rejected" then String(min:10, max:255) else absent
+    tags: String(max:15)[max:10]
+    meta: {key: String(max:15), value: String(max:255)}[] default []
+    comments: Comment[]
+    customVariables: dict<String(max:10), String(max:255)>
+    activeFrom: DateTimeFormatted(max:this.activeTo)
+    activeTo?: DateTimeFormatted(min:this.activeFrom)
+
+    @js.ignore
+    internalNote?: String
+}
+
+@php.codegen.namespace = "App\\Entities" on Post
+@js.ignore on Post.{internalNote}
+
+@php.codegen.dir = "src/Entities"
+type PostWithStatus = Post & {
+    status: PostStatus default "Draft"
+}
